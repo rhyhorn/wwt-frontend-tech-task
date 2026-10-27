@@ -1,1 +1,5 @@
-{}
+{
+	"apply-title": "Do you want to apply new filter",
+	"use-old": "Use old filter",
+	"apply-new": "Apply new filter"
+}

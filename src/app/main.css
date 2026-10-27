@@ -9,6 +9,7 @@
 	--color-background: var(--white);
 	--color-foreground: var(--gray-900);
 	--color-border: var(--gray-300);
+	--color-overlay: var(--black-alpha-30);
 
 	--color-primary: var(--orange-500);
 	--color-primary-hover: var(--orange-600);
@@ -17,4 +18,11 @@
 	--color-secondary: var(--white);
 	--color-secondary-hover: var(--gray-50);
 	--color-secondary-foreground: var(--gray-900);
+}
+
+@layer base {
+	/* Native <dialog> does not lock page scroll */
+	body:has(dialog[open]) {
+		overflow: hidden;
+	}
 }

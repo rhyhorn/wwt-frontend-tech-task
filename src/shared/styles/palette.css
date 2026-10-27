@@ -1,6 +1,7 @@
 /* Primitive colors from the design. Use semantic tokens from main.css in components */
 :root {
 	--white: #ffffff;
+	--black-alpha-30: rgb(0 0 0 / 0.3);
 
 	--gray-50: #f5f5f5;
 	--gray-300: #bdbdbd;
