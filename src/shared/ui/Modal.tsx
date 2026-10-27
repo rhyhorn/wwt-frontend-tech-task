@@ -7,6 +7,7 @@ type ModalSize = 'md' | 'lg'
 interface ModalProps {
 	open: boolean
 	onClose: () => void
+	onAfterClose?: () => void
 	title: ReactNode
 	footer?: ReactNode
 	children?: ReactNode
@@ -21,21 +22,66 @@ const sizeClassNames: Record<ModalSize, string> = {
 export const Modal = ({
 	open,
 	onClose,
+	onAfterClose,
 	title,
 	footer,
 	children,
 	size = 'md'
 }: ModalProps) => {
 	const dialogRef = useRef<HTMLDialogElement>(null)
+	const wasOpenRef = useRef(false)
 
 	useEffect(() => {
 		const dialog = dialogRef.current
 
-		if (open && !dialog?.open) {
-			dialog?.showModal()
+		if (!dialog) {
+			return
 		}
-		if (!open && dialog?.open) {
+
+		if (open) {
+			wasOpenRef.current = true
+			delete dialog.dataset.closing
+			if (!dialog.open) {
+				dialog.showModal()
+			}
+			return
+		}
+
+		if (!wasOpenRef.current) {
+			return
+		}
+
+		const finishClose = () => {
+			wasOpenRef.current = false
+			delete dialog.dataset.closing
 			dialog.close()
+			onAfterClose?.()
+		}
+
+		if (!dialog.open) {
+			finishClose()
+			return
+		}
+
+		let isCancelled = false
+		dialog.dataset.closing = ''
+
+		Promise.allSettled(
+			dialog
+				.getAnimations({ subtree: true })
+				.filter(
+					animation =>
+						(animation.effect as KeyframeEffect | null)?.target === dialog
+				)
+				.map(animation => animation.finished)
+		).then(() => {
+			if (!isCancelled) {
+				finishClose()
+			}
+		})
+
+		return () => {
+			isCancelled = true
 		}
 	}, [open])
 
@@ -50,12 +96,19 @@ export const Modal = ({
 		onClose()
 	}
 
+	const handleNativeClose = () => {
+		if (open) {
+			onClose()
+		}
+	}
+
 	return (
 		<dialog
 			ref={dialogRef}
 			onCancel={handleCancel}
+			onClose={handleNativeClose}
 			onClick={handleClick}
-			className={`m-auto w-[calc(100%-2rem)] overflow-hidden rounded-2xl bg-background p-0 text-foreground shadow-xl backdrop:bg-overlay ${sizeClassNames[size]}`}
+			className={`m-auto w-[calc(100%-2rem)] overflow-hidden rounded-2xl bg-background p-0 text-foreground shadow-xl backdrop:bg-overlay motion-safe:animate-in motion-safe:fade-in-0 motion-safe:zoom-in-95 motion-safe:duration-200 motion-safe:backdrop:animate-in motion-safe:backdrop:fade-in-0 motion-safe:backdrop:duration-200 motion-safe:data-closing:animate-out motion-safe:data-closing:fade-out-0 motion-safe:data-closing:zoom-out-95 motion-safe:data-closing:fill-mode-forwards motion-safe:data-closing:backdrop:animate-out motion-safe:data-closing:backdrop:fade-out-0 motion-safe:data-closing:backdrop:fill-mode-forwards data-closing:pointer-events-none ${sizeClassNames[size]}`}
 		>
 			<div className="flex max-h-[calc(100dvh-4rem)] flex-col">
 				<header className="relative mx-8 mt-8 mb-6 px-10">

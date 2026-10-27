@@ -23,11 +23,17 @@ export const EditFiltersModal = ({ onClose }: EditFiltersModalProps) => {
 	const { data: filterItems, isPending, isError } = useFilterItemsQuery()
 
 	const [draftFilters, setDraftFilters] = useState(appliedFilters)
+	const [isOpen, setIsOpen] = useState(true)
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+
+	const close = () => {
+		setIsConfirmOpen(false)
+		setIsOpen(false)
+	}
 
 	const applyFilters = () => {
 		setFilters(draftFilters)
-		onClose()
+		close()
 	}
 
 	const renderContent = () => {
@@ -55,8 +61,9 @@ export const EditFiltersModal = ({ onClose }: EditFiltersModalProps) => {
 	return (
 		<>
 			<Modal
-				open
-				onClose={onClose}
+				open={isOpen}
+				onClose={close}
+				onAfterClose={onClose}
 				size="lg"
 				title={t('filter:title')}
 				footer={
@@ -85,7 +92,7 @@ export const EditFiltersModal = ({ onClose }: EditFiltersModalProps) => {
 				open={isConfirmOpen}
 				onClose={() => setIsConfirmOpen(false)}
 				onConfirm={applyFilters}
-				onCancel={onClose}
+				onCancel={close}
 			/>
 		</>
 	)
