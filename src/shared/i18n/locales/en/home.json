@@ -1,4 +1,5 @@
 {
 	"title": "WinWinTravel frontend test task",
-	"change-filters": "Change filters"
+	"change-filters": "Change filters",
+	"selected-filters": "Selected filters"
 }

@@ -3,12 +3,12 @@
 @import '../shared/styles/palette.css';
 
 @theme inline {
-	/* Disable the default Tailwind palette: only design tokens are allowed */
 	--color-*: initial;
 
 	--color-background: var(--white);
 	--color-foreground: var(--gray-900);
 	--color-border: var(--gray-300);
+	--color-divider: var(--gray-200);
 	--color-overlay: var(--black-alpha-30);
 
 	--color-primary: var(--orange-500);
@@ -21,7 +21,6 @@
 }
 
 @layer base {
-	/* Native <dialog> does not lock page scroll */
 	body:has(dialog[open]) {
 		overflow: hidden;
 	}

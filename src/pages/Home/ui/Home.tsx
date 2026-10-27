@@ -2,35 +2,33 @@ import { useState } from 'react'
 
 import { t } from 'i18next'
 
-import { Button, Modal } from '@/shared/ui'
+import { useFilterStore } from '@/entities/Filter'
+import { EditFiltersModal } from '@/features/EditFilters'
+import { Button } from '@/shared/ui'
 
 export const Home = () => {
-	const [isModalOpen, setIsModalOpen] = useState(false)
-
-	const closeModal = () => setIsModalOpen(false)
+	const filters = useFilterStore(state => state.filters)
+	const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
 
 	return (
-		<section className="w-full h-dvh flex items-center justify-center flex-col">
-			<h1 className="text-6xl text-foreground mb-12">{t('home:title')}</h1>
-			<Button onClick={() => setIsModalOpen(true)}>
+		<main className="flex min-h-dvh flex-col items-center justify-center gap-8 p-4">
+			<h1 className="text-center text-4xl text-foreground sm:text-6xl">
+				{t('home:title')}
+			</h1>
+			<Button onClick={() => setIsFilterModalOpen(true)}>
 				{t('home:change-filters')}
 			</Button>
-			<Modal
-				open={isModalOpen}
-				onClose={closeModal}
-				title={t('filter:apply-title')}
-				footer={
-					<>
-						<Button
-							variant="secondary"
-							onClick={closeModal}
-						>
-							{t('filter:use-old')}
-						</Button>
-						<Button onClick={closeModal}>{t('filter:apply-new')}</Button>
-					</>
-				}
-			/>
-		</section>
+
+			<section className="w-full max-w-2xl">
+				<h2 className="mb-2 text-lg">{t('home:selected-filters')}</h2>
+				<pre className="overflow-x-auto rounded-lg border border-border p-4 text-sm">
+					{JSON.stringify(filters, null, 2)}
+				</pre>
+			</section>
+
+			{isFilterModalOpen && (
+				<EditFiltersModal onClose={() => setIsFilterModalOpen(false)} />
+			)}
+		</main>
 	)
 }

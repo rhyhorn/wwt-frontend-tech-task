@@ -1,6 +1,8 @@
-import { MouseEvent, ReactNode, useEffect, useRef } from 'react'
+import { MouseEvent, ReactNode, SyntheticEvent, useEffect, useRef } from 'react'
 
 import { t } from 'i18next'
+
+type ModalSize = 'md' | 'lg'
 
 interface ModalProps {
 	open: boolean
@@ -8,6 +10,12 @@ interface ModalProps {
 	title: ReactNode
 	footer?: ReactNode
 	children?: ReactNode
+	size?: ModalSize
+}
+
+const sizeClassNames: Record<ModalSize, string> = {
+	md: 'max-w-2xl',
+	lg: 'max-w-4xl'
 }
 
 export const Modal = ({
@@ -15,7 +23,8 @@ export const Modal = ({
 	onClose,
 	title,
 	footer,
-	children
+	children,
+	size = 'md'
 }: ModalProps) => {
 	const dialogRef = useRef<HTMLDialogElement>(null)
 
@@ -36,15 +45,20 @@ export const Modal = ({
 		}
 	}
 
+	const handleCancel = (e: SyntheticEvent<HTMLDialogElement>) => {
+		e.preventDefault()
+		onClose()
+	}
+
 	return (
 		<dialog
 			ref={dialogRef}
-			onClose={onClose}
+			onCancel={handleCancel}
 			onClick={handleClick}
-			className="m-auto w-full max-w-2xl rounded-2xl bg-background p-0 text-foreground shadow-xl backdrop:bg-overlay"
+			className={`m-auto w-[calc(100%-2rem)] overflow-hidden rounded-2xl bg-background p-0 text-foreground shadow-xl backdrop:bg-overlay ${sizeClassNames[size]}`}
 		>
-			<div className="flex flex-col gap-12 p-8">
-				<header className="relative px-10">
+			<div className="flex max-h-[calc(100dvh-4rem)] flex-col">
+				<header className="relative mx-8 mt-8 mb-6 px-10">
 					<h2 className="text-center text-2xl">{title}</h2>
 					<button
 						type="button"
@@ -66,10 +80,14 @@ export const Modal = ({
 					</button>
 				</header>
 
-				{children && <div>{children}</div>}
+				{children && (
+					<div className="min-h-0 flex-1 overflow-y-auto px-8">{children}</div>
+				)}
 
 				{footer && (
-					<footer className="flex justify-center gap-4">{footer}</footer>
+					<footer className="flex justify-center gap-4 px-8 pt-6 pb-8">
+						{footer}
+					</footer>
 				)}
 			</div>
 		</dialog>
