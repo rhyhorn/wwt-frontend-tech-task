@@ -4,7 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import svgr from 'vite-plugin-svgr'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig(() => ({
 	root: '.',
@@ -18,12 +17,15 @@ export default defineConfig(() => ({
 		}
 	},
 
+	resolve: {
+		tsconfigPaths: true
+	},
+
 	plugins: [
 		react(),
 		svgr({
 			include: '**/*.svg'
 		}),
-		tsconfigPaths(),
 		tailwindcss()
 	],
 
