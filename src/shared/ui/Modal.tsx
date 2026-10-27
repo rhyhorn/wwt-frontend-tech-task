@@ -1,4 +1,11 @@
-import { MouseEvent, ReactNode, SyntheticEvent, useEffect, useRef } from 'react'
+import {
+	MouseEvent,
+	ReactNode,
+	SyntheticEvent,
+	useEffect,
+	useId,
+	useRef
+} from 'react'
 
 import { t } from 'i18next'
 
@@ -29,6 +36,7 @@ export const Modal = ({
 	size = 'md'
 }: ModalProps) => {
 	const dialogRef = useRef<HTMLDialogElement>(null)
+	const titleId = useId()
 	const wasOpenRef = useRef(false)
 
 	useEffect(() => {
@@ -105,6 +113,7 @@ export const Modal = ({
 	return (
 		<dialog
 			ref={dialogRef}
+			aria-labelledby={titleId}
 			onCancel={handleCancel}
 			onClose={handleNativeClose}
 			onClick={handleClick}
@@ -112,7 +121,12 @@ export const Modal = ({
 		>
 			<div className="flex max-h-[calc(100dvh-4rem)] flex-col">
 				<header className="relative mx-8 mt-8 mb-6 px-10">
-					<h2 className="text-center text-2xl">{title}</h2>
+					<h2
+						id={titleId}
+						className="text-center text-2xl"
+					>
+						{title}
+					</h2>
 					<button
 						type="button"
 						onClick={onClose}

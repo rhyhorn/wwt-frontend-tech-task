@@ -38,10 +38,10 @@ export const EditFiltersModal = ({ onClose }: EditFiltersModalProps) => {
 
 	const renderContent = () => {
 		if (isPending) {
-			return <p>{t('filter:loading')}</p>
+			return <p role="status">{t('filter:loading')}</p>
 		}
 		if (isError) {
-			return <p>{t('filter:error')}</p>
+			return <p role="alert">{t('filter:error')}</p>
 		}
 
 		return filterItems.map(filter => (

@@ -1,7 +1,7 @@
 import 'i18next'
 
-import { resources } from '../public/locales'
-import { I18N_DEFAULT_NS } from './constants'
+import { I18N_DEFAULT_NS } from './i18nConstants'
+import { resources } from './locales'
 
 declare module 'i18next' {
 	interface CustomTypeOptions {

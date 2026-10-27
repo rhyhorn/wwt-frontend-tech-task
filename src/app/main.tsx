@@ -1,18 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { QueryClientProvider } from '@tanstack/react-query'
+import { Home } from '@/pages/Home'
+import '@/shared/i18n'
 
-import { queryClient } from '@/shared/api'
-
-import { Home } from '../pages/Home'
-import '../shared/i18n'
 import './main.css'
+import { Providers } from './providers'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<QueryClientProvider client={queryClient}>
+		<Providers>
 			<Home />
-		</QueryClientProvider>
+		</Providers>
 	</StrictMode>
 )

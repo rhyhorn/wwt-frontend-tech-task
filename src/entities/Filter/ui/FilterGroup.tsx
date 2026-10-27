@@ -23,7 +23,7 @@ export const FilterGroup = ({
 						<Checkbox
 							key={option.id}
 							label={option.name}
-							title={option.description}
+							description={option.description}
 							checked={selectedOptionIds.includes(option.id)}
 							onChange={() => onToggleOption(option.id)}
 						/>
