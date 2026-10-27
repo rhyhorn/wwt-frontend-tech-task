@@ -1,0 +1,11 @@
+/* Primitive colors from the design. Use semantic tokens from main.css in components */
+:root {
+	--white: #ffffff;
+
+	--gray-50: #f5f5f5;
+	--gray-300: #bdbdbd;
+	--gray-900: #31393c;
+
+	--orange-500: #ff5f00;
+	--orange-600: #e55500;
+}

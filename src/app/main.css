@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '../shared/styles/palette.css';
+
+@theme inline {
+	/* Disable the default Tailwind palette: only design tokens are allowed */
+	--color-*: initial;
+
+	--color-background: var(--white);
+	--color-foreground: var(--gray-900);
+	--color-border: var(--gray-300);
+
+	--color-primary: var(--orange-500);
+	--color-primary-hover: var(--orange-600);
+	--color-primary-foreground: var(--white);
+
+	--color-secondary: var(--white);
+	--color-secondary-hover: var(--gray-50);
+	--color-secondary-foreground: var(--gray-900);
+}
